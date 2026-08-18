@@ -7,6 +7,100 @@
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* YouTube Live + Video Grid */
+.yt-channel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.yt-video-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: 0.3s ease;
+    border: 1px solid #eef3fa;
+    cursor: pointer;
+}
+
+.yt-video-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    border-color: #FF0000;
+}
+
+.yt-video-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #0a1a2b;
+}
+
+.yt-video-card .video-info {
+    padding: 0.8rem 1rem 1rem;
+}
+
+.yt-video-card .video-title {
+    font-weight: 600;
+    color: #0b2a4a;
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.yt-video-card .video-meta {
+    font-size: 0.8rem;
+    color: #6b7f92;
+    margin-top: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.yt-video-card .live-tag {
+    background: #FF0000;
+    color: white;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.live-badge {
+    background: #e63946;
+    color: white;
+    padding: 0.3rem 1.2rem;
+    border-radius: 60px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.loading-placeholder {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7f92;
+    grid-column: 1 / -1;
+}
+
+.loading-placeholder i {
+    font-size: 2.5rem;
+    color: #FF0000;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0.4; transform: scale(0.9); }
+}
+    
     * {
       margin: 0;
       padding: 0;
@@ -181,92 +275,205 @@
       background: #f9c74f;
       color: #0b2a4a;
     }
+<!-- LIVE CLASSES - YouTube Live + Videos -->
+<div class="live-section" id="live">
+    <div class="live-header">
+        <h2>
+            <i class="fab fa-youtube" style="color:#FF0000;"></i> 
+            THE CHAIRMAN SHOW
+            <span id="liveBadge" style="display:none; background:#FF0000; color:white; font-size:0.8rem; padding:0.2rem 1rem; border-radius:30px; margin-left:10px;">
+                <i class="fas fa-circle" style="animation: pulse 1.5s infinite; font-size:0.6rem;"></i> LIVE NOW
+            </span>
+        </h2>
+        <a href="https://m.youtube.com/@THE_CHAIRMAN_SHOW" target="_blank" class="live-badge" style="background:#FF0000; text-decoration:none;">
+            <i class="fab fa-youtube"></i> Subscribe
+        </a>
+    </div>
+<script>
+    // ============================================
+    // THE CHAIRMAN SHOW - YouTube Integration
+    // ============================================
+    
+    // 🔑 IMPORTANT: Aapki YouTube Channel ID
+    // Isse nikaalna hai: https://www.youtube.com/@THE_CHAIRMAN_SHOW
+    // Page source mein "channelId":"UC..." search karein
+    const CHANNEL_ID = 'UC...'; // ⚠️ REPLACE WITH YOUR CHANNEL ID
+    
+    // YouTube API Key (free - https://console.cloud.google.com/)
+    const API_KEY = 'YOUR_API_KEY'; // ⚠️ REPLACE WITH YOUR API KEY
+    
+    // ============================================
+    // 1. Check if channel is LIVE
+    // ============================================
+    async function checkLiveStatus() {
+        try {
+            // YouTube API v3 se live status check
+            const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&eventType=live&type=video&part=snippet`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            const liveVideo = data.items?.[0];
+            
+            if (liveVideo) {
+                // LIVE hai! Show live player
+                const videoId = liveVideo.id.videoId;
+                const title = liveVideo.snippet.title || 'Live Stream';
+                
+                document.getElementById('livePlayer').style.display = 'block';
+                document.getElementById('liveIframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
+                document.getElementById('liveTitle').textContent = `🔴 ${title}`;
+                document.getElementById('liveBadge').style.display = 'inline-block';
+                
+                // Video grid mein bhi live tag dikhayein (agar grid mein dikhana ho)
+                return true;
+            }
+            
+            return false;
+            
+        } catch (error) {
+            console.error('Live check error:', error);
+            return false;
+        }
+    }
+    
+    // ============================================
+    // 2. Load Latest Videos (if not live)
+    // ============================================
+    async function loadLatestVideos() {
+        const grid = document.getElementById('videoGrid');
+        
+        try {
+            // Channel ki latest videos fetch karein
+            const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=12&type=video`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!data.items || data.items.length === 0) {
+                grid.innerHTML = `
+                    <div class="loading-placeholder">
+                        <i class="fab fa-youtube"></i>
+                        <p>No videos found. <a href="https://m.youtube.com/@THE_CHAIRMAN_SHOW" target="_blank" style="color:#FF0000;">Visit Channel</a></p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            data.items.forEach((item) => {
+                const videoId = item.id.videoId;
+                const title = item.snippet.title;
+                const thumbnail = item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url || '';
+                const published = new Date(item.snippet.publishedAt).toLocaleDateString('en-IN', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+                
+                // Check if this specific video is the live one (to show tag)
+                const isLive = item.snippet.liveBroadcastContent === 'live';
+                
+                html += `
+                    <div class="yt-video-card" onclick="window.open('https://youtube.com/watch?v=${videoId}', '_blank')">
+                        <img src="${thumbnail}" alt="${title}" loading="lazy">
+                        <div class="video-info">
+                            <div class="video-title">${title}</div>
+                            <div class="video-meta">
+                                <span><i class="fab fa-youtube" style="color:#FF0000;"></i> ${published}</span>
+                                ${isLive ? '<span class="live-tag"><i class="fas fa-circle" style="font-size:0.4rem;"></i> LIVE</span>' : '<span>▶ Watch</span>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+            
+        } catch (error) {
+            console.error('Error loading videos:', error);
+            grid.innerHTML = `
+                <div class="loading-placeholder">
+                    <i class="fab fa-youtube"></i>
+                    <p>Unable to load videos. <a href="https://m.youtube.com/@THE_CHAIRMAN_SHOW" target="_blank" style="color:#FF0000;">Visit Channel</a></p>
+                </div>
+            `;
+        }
+    }
+    
+    // ============================================
+    // 3. Main Function - Run on Page Load
+    // ============================================
+    async function initYouTubeSection() {
+        // Pehle live check karein
+        const isLive = await checkLiveStatus();
+        
+        // Agar live nahi hai toh videos load karein
+        if (!isLive) {
+            await loadLatestVideos();
+        } else {
+            // Live hai toh video grid mein bhi live videos dikhayein (optional)
+            // Ya sirf player dikhana hai toh grid empty rakhein
+            document.getElementById('videoGrid').innerHTML = `
+                <div class="loading-placeholder">
+                    <i class="fas fa-circle" style="color:#FF0000; animation: pulse 1.5s infinite;"></i>
+                    <p style="color:#e63946; font-weight:600;">🔴 Live Stream in progress!</p>
+                    <p style="font-size:0.9rem;">Watch above or <a href="https://m.youtube.com/@THE_CHAIRMAN_SHOW" target="_blank" style="color:#FF0000;">open on YouTube</a></p>
+                </div>
+            `;
+        }
+    }
+    
+    // ============================================
+    // 4. Auto-Refresh: Har 2 minute mein check karein
+    // ============================================
+    let checkInterval;
+    
+    function startAutoRefresh() {
+        // Pehle purana interval clear karein
+        if (checkInterval) clearInterval(checkInterval);
+        
+        // Har 2 minute mein live status check karein
+        checkInterval = setInterval(async () => {
+            const isLive = await checkLiveStatus();
+            if (isLive) {
+                // Live start ho gayi! Page reload karein ya UI update karein
+                console.log('🔴 Live stream started!');
+                // Page reload (simple approach)
+                // location.reload(); 
+                // Ya sirf UI update karein (advanced)
+            }
+        }, 120000); // 2 minutes
+    }
+    
+    // ============================================
+    // 5. Init on Page Load
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+        initYouTubeSection();
+        startAutoRefresh();
+    });
+</script>
 
-    /* live classes premium */
-    .live-section {
-      background: linear-gradient(145deg, #ffffff, #f8faff);
-      border-radius: 40px;
-      padding: 2rem 2rem 2.5rem;
-      margin: 3rem 0;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.02);
-      border: 1px solid rgba(27, 63, 98, 0.08);
-    }
+    <!-- Video Grid (shows latest videos OR "No live" message) -->
+    <div id="videoGrid" class="yt-channel-grid">
+        <div class="loading-placeholder">
+            <i class="fas fa-spinner fa-spin" style="font-size:2.5rem; color:#FF0000;"></i>
+            <p>Loading videos...</p>
+        </div>
+    </div>
 
-    .live-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 1.8rem;
-    }
-    .live-header h2 {
-      font-size: 2rem;
-      color: #0b2a4a;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .live-header h2 i {
-      color: #e63946;
-      font-size: 1.6rem;
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 0.6; transform: scale(0.95); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.6; transform: scale(0.95); }
-    }
-    .live-badge {
-      background: #e63946;
-      color: white;
-      padding: 0.3rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
+    <!-- Channel Info -->
+    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; padding: 1rem 1.2rem; background: #f8faff; border-radius: 20px; flex-wrap: wrap;">
+        <div style="width:50px; height:50px; background:#0b2a4a; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:1.2rem;">
+            <i class="fab fa-youtube" style="color:#FF0000;"></i>
+        </div>
+        <div>
+            <strong style="color:#0b2a4a; display:block;">THE CHAIRMAN SHOW</strong>
+            <span style="font-size:0.85rem; color:#4a637a;" id="channelStats">170 subscribers • 45 videos</span>
+        </div>
+        <a href="https://m.youtube.com/@THE_CHAIRMAN_SHOW" target="_blank" style="margin-left:auto; background:#FF0000; color:white; padding:0.4rem 1.5rem; border-radius:40px; text-decoration:none; font-weight:500; font-size:0.9rem;">
+            <i class="fab fa-youtube"></i> Visit Channel
+        </a>
+    </div>
+</div>
 
-    .yt-embed {
-      background: #0a1a2b;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      aspect-ratio: 16 / 9;
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-    .yt-embed iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    .recordings-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-    .record-card {
-      background: #eef3fa;
-      padding: 0.6rem 1.8rem 0.6rem 1.2rem;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      font-weight: 500;
-      color: #1b3f62;
-      border: 1px solid transparent;
-      transition: 0.2s;
-      cursor: default;
-    }
-    .record-card i {
-      color: #e63946;
-    }
-    .record-card:hover {
-      background: white;
-      border-color: #f9c74f;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-    }
 
     /* discussion & payments */
     .two-col {
