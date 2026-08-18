@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manisha NEET Academy</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      color: #1e2a3a;
+      line-height: 1.6;
+    }
+
+    /* premium gradient header */
+    .header {
+      background: linear-gradient(145deg, #0b2a4a 0%, #1b3f62 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border-bottom: 2px solid #f9c74f;
+    }
+
+    .logo h1 {
+      color: white;
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+    .logo span {
+      color: #f9c74f;
+      font-weight: 300;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      color: #eef5ff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 40px;
+      transition: 0.3s;
+      font-size: 1rem;
+    }
+    .nav a:hover, .nav a.active {
+      background: #f9c74f;
+      color: #0b2a4a;
+      box-shadow: 0 4px 12px rgba(249, 199, 79, 0.3);
+    }
+
+    /* container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* hero / instructor section */
+    .hero-instructors {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      background: white;
+      border-radius: 40px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 15px 35px rgba(0, 20, 40, 0.08);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .instructor-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex: 1 1 200px;
+    }
+    .instructor-card .avatar {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #1b3f62, #2b5a7a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.4rem;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      border: 3px solid #f9c74f;
+    }
+    .instructor-info h3 {
+      font-size: 1.4rem;
+      color: #0b2a4a;
+    }
+    .instructor-info .badge {
+      background: #f9c74f;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 0.2rem;
+      color: #1e2a3a;
+    }
+    .instructor-info p {
+      color: #2f4858;
+      font-weight: 400;
+    }
+
+    /* feature grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 30px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.03);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(200, 215, 235, 0.3);
+      backdrop-filter: blur(2px);
+      text-align: center;
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px rgba(27, 63, 98, 0.12);
+      border-color: #f9c74f;
+    }
+    .feature-card i {
+      font-size: 2.8rem;
+      color: #1b3f62;
+      background: #e9eff6;
+      padding: 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+      color: #0b2a4a;
+    }
+    .feature-card p {
+      color: #3d5a73;
+      font-weight: 400;
+      font-size: 0.95rem;
+    }
+    .feature-card .btn-upload {
+      background: #0b2a4a;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 500;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .feature-card .btn-upload:hover {
+      background: #f9c74f;
+      color: #0b2a4a;
+    }
+
+    /* live classes premium */
+    .live-section {
+      background: linear-gradient(145deg, #ffffff, #f8faff);
+      border-radius: 40px;
+      padding: 2rem 2rem 2.5rem;
+      margin: 3rem 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+      border: 1px solid rgba(27, 63, 98, 0.08);
+    }
+
+    .live-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+    }
+    .live-header h2 {
+      font-size: 2rem;
+      color: #0b2a4a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .live-header h2 i {
+      color: #e63946;
+      font-size: 1.6rem;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0.6; transform: scale(0.95); }
+    }
+    .live-badge {
+      background: #e63946;
+      color: white;
+      padding: 0.3rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .yt-embed {
+      background: #0a1a2b;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      aspect-ratio: 16 / 9;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .yt-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .recordings-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .record-card {
+      background: #eef3fa;
+      padding: 0.6rem 1.8rem 0.6rem 1.2rem;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 500;
+      color: #1b3f62;
+      border: 1px solid transparent;
+      transition: 0.2s;
+      cursor: default;
+    }
+    .record-card i {
+      color: #e63946;
+    }
+    .record-card:hover {
+      background: white;
+      border-color: #f9c74f;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+
+    /* discussion & payments */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2.5rem 0;
+    }
+    @media (max-width: 700px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    .discussion-box, .payment-box {
+      background: white;
+      padding: 1.8rem 2rem;
+      border-radius: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.02);
+      border: 1px solid #e8edf5;
+    }
+    .discussion-box h3, .payment-box h3 {
+      font-size: 1.5rem;
+      color: #0b2a4a;
+      margin-bottom: 1rem;
+    }
+    .discussion-box i {
+      color: #1b3f62;
+      margin-right: 8px;
+    }
+    .chat-mock {
+      background: #f2f6fc;
+      padding: 0.8rem 1.2rem;
+      border-radius: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+    .chat-mock span {
+      color: #2f4858;
+    }
+    .chat-mock i {
+      color: #f9c74f;
+      font-size: 1.2rem;
+    }
+    .upi-payment {
+      background: #e3eaf3;
+      border-radius: 60px;
+      padding: 0.8rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      border: 2px dashed #0b2a4a;
+    }
+    .upi-payment i {
+      font-size: 1.6rem;
+      color: #1b3f62;
+    }
+    .btn-pay {
+      background: #0b2a4a;
+      border: none;
+      padding: 0.7rem 2.2rem;
+      border-radius: 60px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-pay:hover {
+      background: #f9c74f;
+      color: #0b2a4a;
+    }
+
+    /* daily practice & task timer */
+    .task-timer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      background: white;
+      border-radius: 40px;
+      padding: 1.8rem 2.5rem;
+      margin: 2.5rem 0;
+      align-items: center;
+      border: 1px solid #e1eaf1;
+    }
+    .task-list {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .task-item {
+      background: #eef3fa;
+      padding: 0.3rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 500;
+    }
+    .pomodoro {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .pomodoro i {
+      font-size: 2rem;
+      color: #1b3f62;
+    }
+    .pomodoro .timer {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: #0b2a4a;
+      color: white;
+      padding: 0.2rem 1.6rem;
+      border-radius: 60px;
+      letter-spacing: 2px;
+    }
+
+    /* footer */
+    .footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 1.5rem;
+      color: #3d5a73;
+      border-top: 1px solid #dbe1eb;
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .header { flex-direction: column; align-items: start; gap: 0.8rem; }
+      .hero-instructors { flex-direction: column; align-items: center; }
+      .instructor-card { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <h1>Manisha <span>NEET</span> Academy</h1>
+    </div>
+    <div class="nav">
+      <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-chalkboard-teacher"></i> Live</a>
+      <a href="#"><i class="fas fa-file-pdf"></i> Notes</a>
+      <a href="#"><i class="fas fa-question-circle"></i> NEET Q</a>
+      <a href="#"><i class="fas fa-users"></i> Discussion</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Instructors -->
+    <div class="hero-instructors">
+      <div class="instructor-card">
+        <div class="avatar">MG</div>
+        <div class="instructor-info">
+          <h3>Manisha Gulia Ma'am</h3>
+          <span class="badge"><i class="fas fa-star"></i> 4 years exp.</span>
+          <p><i class="fas fa-graduation-cap"></i> NEET Expert</p>
+        </div>
+      </div>
+      <div class="instructor-card">
+        <div class="avatar">SS</div>
+        <div class="instructor-info">
+          <h3>Sumit Sir</h3>
+          <span class="badge"><i class="fas fa-university"></i> IIT JODHPUR</span>
+          <p><i class="fas fa-flask"></i> Physics & Chemistry</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pomodoro + Task -->
+    <div class="task-timer">
+      <div class="task-list">
+        <span class="task-item"><i class="fas fa-check-circle" style="color:#2a9d8f;"></i> Daily Practice</span>
+        <span class="task-item"><i class="fas fa-clock"></i> 3 Tasks</span>
+        <span class="task-item"><i class="fas fa-book-open"></i> NEET Q's</span>
+      </div>
+      <div class="pomodoro">
+        <i class="fas fa-hourglass-half"></i>
+        <span class="timer">25:00</span>
+        <span style="font-weight:500; margin-left: 4px;">Pomodoro</span>
+      </div>
+    </div>
+
+    <!-- Feature Grid : notes, pdf, DPP, etc -->
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fas fa-file-pdf"></i>
+        <h3>Class Notes</h3>
+        <p>Upload PDF notes (only you can upload)</p>
+        <button class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-check-double"></i>
+        <h3>NEET Guaranteed Q</h3>
+        <p>Upload important question PDFs</p>
+        <button class="btn-upload"><i class="fas fa-file-upload"></i> Upload PDF</button>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-tasks"></i>
+        <h3>Daily Practice</h3>
+        <p>DPP with solutions & timer</p>
+        <button class="btn-upload" style="background:#f9c74f; color:#0b2a4a;">Start DPP</button>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-users"></i>
+        <h3>Students Discussion</h3>
+        <p>Connect with peers & mentors</p>
+        <button class="btn-upload"><i class="fas fa-comment-dots"></i> Join</button>
+      </div>
+    </div>
+
+    <!-- LIVE CLASSES premium -->
+    <div class="live-section">
+      <div class="live-header">
+        <h2><i class="fas fa-circle" style="color:#e63946; font-size:1rem;"></i> Live Classes</h2>
+        <span class="live-badge"><i class="fas fa-broadcast-tower"></i> LIVE now</span>
+      </div>
+
+      <!-- YouTube embed (demo) -->
+      <div class="yt-embed">
+        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=0&mute=1" allowfullscreen></iframe>
+      </div>
+
+      <!-- Recordings saved -->
+      <div class="recordings-row">
+        <div class="record-card"><i class="fas fa-play-circle"></i> Recording 1 - Bio (12/08)</div>
+        <div class="record-card"><i class="fas fa-play-circle"></i> Recording 2 - Chem (11/08)</div>
+        <div class="record-card"><i class="fas fa-play-circle"></i> Recording 3 - Physics (10/08)</div>
+        <div class="record-card"><i class="fas fa-download"></i> All recordings</div>
+      </div>
+    </div>
+
+    <!-- Discussion + Payments two col -->
+    <div class="two-col">
+      <div class="discussion-box">
+        <h3><i class="fas fa-comments"></i> Students Discussion</h3>
+        <p style="margin-bottom: 1rem;">Ask doubts, share notes, and interact.</p>
+        <div class="chat-mock">
+          <span><i class="fas fa-user-circle"></i> Priya: NEET 2026 strategy?</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="chat-mock">
+          <span><i class="fas fa-user-circle"></i> Ankit: when next mock?</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <button class="btn-upload" style="margin-top:1.2rem; background:#eef3fa; color:#0b2a4a; border:1px solid #0b2a4a;"><i class="fas fa-edit"></i> Post your doubt</button>
+      </div>
+
+      <div class="payment-box">
+        <h3><i class="fas fa-credit-card"></i> Payments</h3>
+        <p>Access full platform via UPI</p>
+        <div class="upi-payment">
+          <i class="fas fa-qrcode"></i> 
+          <span>manishaacademy@upi</span>
+          <i class="fas fa-copy" style="color:#1b3f62; cursor:pointer;"></i>
+        </div>
+        <p style="font-size:0.9rem; margin: 1rem 0 0.5rem;">Pay & get instant access to all features</p>
+        <button class="btn-pay"><i class="fas fa-phone-alt"></i> Pay with UPI</button>
+        <div style="margin-top: 0.8rem; font-size:0.85rem; color:#3d5a73;">
+          <i class="fas fa-lock"></i> Secure • Instant activation
+        </div>
+      </div>
+    </div>
+
+    <!-- additional note: premium look -->
+    <div style="text-align: right; font-size:0.85rem; color:#6b7f92; margin-top: 0.5rem;">
+      <i class="fas fa-gem" style="color:#f9c74f;"></i> Premium Education Platform
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Manisha NEET Academy — built for aspirants</p>
+  </footer>
+</body>
+</html>
