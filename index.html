@@ -1,3 +1,78 @@
+<script>
+    // ============================================
+    // PROTECTED ROUTE CHECK
+    // ============================================
+    function checkAuth() {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        // Agar koi user nahi hai toh signin page pe redirect
+        if (!token && !localStorage.getItem('isGuest')) {
+            window.location.href = 'signin.html';
+            return false;
+        }
+        
+        // User info show karein
+        if (user) {
+            document.getElementById('userName').textContent = user.name || 'User';
+            document.getElementById('userEmail').textContent = user.email || '';
+            
+            // Admin/Teacher specific features
+            if (user.role === 'admin' || user.role === 'teacher') {
+                document.getElementById('adminPanel').style.display = 'block';
+            }
+        }
+        
+        return true;
+    }
+    
+    // ============================================
+    // LOGOUT
+    // ============================================
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('isGuest');
+            window.location.href = 'signin.html';
+        }
+    }
+    
+    // ============================================
+    // USER DATA FETCH FROM BACKEND
+    // ============================================
+    async function fetchUserData() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                // Update user data in localStorage
+                localStorage.setItem('user', JSON.stringify(data.user));
+                document.getElementById('userName').textContent = data.user.name;
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+    
+    // ============================================
+    // INIT
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const isAuth = checkAuth();
+        if (isAuth) {
+            fetchUserData();
+        }
+    });
+      </script>
 <!DOCTYPE html>
 <html lang="hi">
 <head>
