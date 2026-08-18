@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manisha NEET Academy - Sign In</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      color: #1e2a3a;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* premium gradient header */
+    .header {
+      background: linear-gradient(145deg, #0b2a4a 0%, #1b3f62 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border-bottom: 2px solid #f9c74f;
+    }
+
+    .logo h1 {
+      color: white;
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+    .logo span {
+      color: #f9c74f;
+      font-weight: 300;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      color: #eef5ff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 40px;
+      transition: 0.3s;
+      font-size: 1rem;
+    }
+    .nav a:hover, .nav a.active {
+      background: #f9c74f;
+      color: #0b2a4a;
+      box-shadow: 0 4px 12px rgba(249, 199, 79, 0.3);
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Sign In Card */
+    .signin-card {
+      background: white;
+      border-radius: 40px;
+      padding: 3rem 3.5rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 25px 50px rgba(0, 20, 40, 0.12);
+      border: 1px solid rgba(255,255,255,0.5);
+      text-align: center;
+    }
+
+    .signin-card .logo-icon {
+      font-size: 3.5rem;
+      color: #1b3f62;
+      background: #e9eff6;
+      width: 90px;
+      height: 90px;
+      line-height: 90px;
+      border-radius: 30px;
+      margin: 0 auto 1.2rem;
+    }
+
+    .signin-card h2 {
+      font-size: 2rem;
+      color: #0b2a4a;
+      margin-bottom: 0.3rem;
+    }
+    .signin-card p.sub {
+      color: #4a637a;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: white;
+      border: 2px solid #dbe1eb;
+      border-radius: 60px;
+      padding: 0.9rem 1.8rem;
+      width: 100%;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e2a3a;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+    }
+    .google-btn:hover {
+      border-color: #1b3f62;
+      box-shadow: 0 8px 20px rgba(27, 63, 98, 0.1);
+      transform: translateY(-2px);
+    }
+    .google-btn i {
+      font-size: 1.8rem;
+      color: #4285F4;
+    }
+    .google-btn .g-icon {
+      font-weight: 700;
+      background: #4285F4;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1.8rem 0;
+      color: #8a9fb0;
+      font-size: 0.9rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #dbe1eb;
+    }
+    .divider::before { margin-right: 1rem; }
+    .divider::after { margin-left: 1rem; }
+
+    .signin-card .guest-link {
+      color: #1b3f62;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .signin-card .guest-link:hover {
+      color: #f9c74f;
+    }
+
+    .signin-card .footnote {
+      margin-top: 1.8rem;
+      font-size: 0.85rem;
+      color: #6b7f92;
+    }
+
+    .signin-card .footnote i {
+      color: #f9c74f;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header { flex-direction: column; align-items: start; gap: 0.8rem; }
+      .signin-card { padding: 2rem 1.5rem; }
+      .signin-card .logo-icon { width: 70px; height: 70px; line-height: 70px; font-size: 2.8rem; }
+    }
+
+    /* footer */
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #3d5a73;
+      border-top: 1px solid #dbe1eb;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <h1>Manisha <span>NEET</span> Academy</h1>
+    </div>
+    <div class="nav">
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="#" class="active"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+      <a href="#"><i class="fas fa-chalkboard-teacher"></i> Live</a>
+      <a href="#"><i class="fas fa-file-pdf"></i> Notes</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Sign In Card -->
+    <div class="signin-card">
+      <div class="logo-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <h2>Welcome Back</h2>
+      <p class="sub">Sign in to access your NEET prep dashboard</p>
+
+      <!-- Google Sign In Button -->
+      <button class="google-btn" onclick="alert('Google Sign-In flow initiated (demo)')">
+        <span class="g-icon">G</span>
+        Sign in with Google
+      </button>
+
+      <div class="divider">or continue as</div>
+
+      <a href="#" class="guest-link" onclick="alert('Guest access: limited features')">
+        <i class="fas fa-user"></i> Guest User
+      </a>
+
+      <div class="footnote">
+        <i class="fas fa-lock"></i> Secure login • No password required
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Manisha NEET Academy — built for aspirants</p>
+  </footer>
+</body>
+</html>
